@@ -6,28 +6,28 @@ RUN yum update -y
 RUN yum install -y nodejs npm
 
 # Set the working directory
-WORKDIR /Spyd-main
+WORKDIR /var/lib/jenkins/workspace/Spyd-main
 
 # Copy package.json and package-lock.json first for caching
-COPY Spyd-main/package*.json ./
+COPY /var/lib/jenkins/workspace/Spyd-main/package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Add the rest of the application code
-COPY Spyd-main .
+COPY /var/lib/jenkins/workspace/Spyd-main .
 
 # Build the application
 RUN npm run build
 
 # Debugging step: List the contents of /app to ensure dist exists
-RUN ls -alh /Spyd-main/dist
+RUN ls -alh /var/lib/jenkins/workspace/Spyd-main/dist
 
 # Stage 2: Set up Nginx to serve the application
 FROM nginx:latest
 
 # Copy the built app files from the builder stage
-COPY --from=builder /Spyd-main/dist /usr/share/nginx/html
+COPY --from=builder /var/lib/jenkins/workspace/Spyd-main/dist /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
