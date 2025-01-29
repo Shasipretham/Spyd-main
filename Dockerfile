@@ -15,7 +15,7 @@ COPY /var/lib/jenkins/workspace/Spyd-main/package*.json ./
 RUN npm install
 
 # Add the rest of the application code
-COPY /var/lib/jenkins/workspace/Spyd-main .
+COPY . .
 
 # Build the application
 RUN npm run build
