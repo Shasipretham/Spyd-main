@@ -1,27 +1,20 @@
 # Stage 1: Build the Node.js application
-FROM amazonlinux:2023 as builder
-
-# Install Node.js and npm
-RUN yum update -y
-RUN yum install -y nodejs npm
+FROM node:16-alpine as builder
 
 # Set the working directory
 WORKDIR /Spyd-main
 
-# Copy package.json and package-lock.json first for caching
-COPY Spyd-main/package*.json ./
+# Copy package.json and package-lock.json for caching
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Add the rest of the application code
-COPY Spyd-main .
+COPY . .
 
 # Build the application
 RUN npm run build
-
-# Debugging step: List the contents of /app to ensure dist exists
-RUN ls -alh /Spyd-main/dist
 
 # Stage 2: Set up Nginx to serve the application
 FROM nginx:latest
