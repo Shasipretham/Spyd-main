@@ -24,6 +24,7 @@ COPY --from=builder /Spyd-main/dist /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
+# Expose port 5173
 EXPOSE 5173
 
 # Run Nginx to serve the app
